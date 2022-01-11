@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <PackageId>Microsoft.Orleans.EventSourcing</PackageId>
+    <Title>Microsoft Orleans Event-Sourcing</Title>
+    <Description>Base types for creating Microsoft Orleans grains with event-sourced state.</Description>
+    <PackageTags>$(PackageTags) EventSourcing</PackageTags>
+    <TargetFrameworks>$(StandardTargetFrameworks)</TargetFrameworks>
+    <OrleansBuildTimeCodeGen>true</OrleansBuildTimeCodeGen>
+    <AssemblyName>Orleans.EventSourcing</AssemblyName>
+    <RootNamespace>OrleansEventSourcing</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Orleans.Runtime.Abstractions\Orleans.Runtime.Abstractions.csproj" />
+    <PackageReference Include="Microsoft.CSharp" Version="$(MicrosoftCSharpVersion)" />
+  </ItemGroup>
+</Project>

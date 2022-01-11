@@ -1,0 +1,101 @@
+name: benchmark_dotnet
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+env:
+  ITERATION_COUNT: 2
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+jobs:  
+  benchmark_dotnet_osx:
+    runs-on: macos-latest
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Benchmark
+        shell: bash
+        run: |
+          chmod +x benchmark-osx.sh
+          chmod +x dotnet-osx/dotnet
+          brew install coreutils
+          ./benchmark-osx.sh
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v2
+        with:
+          name: results_osx_dotnet
+          path: results_osx_dotnet.txt
+
+  benchmark_dotnet_linux:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Benchmark
+        shell: bash
+        run: |
+          chmod +x benchmark-linux.sh
+          chmod +x dotnet-linux/dotnet
+          ./benchmark-linux.sh
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v2
+        with:
+          name: results_linux_dotnet
+          path: results_linux_dotnet.txt
+
+  benchmark_dotnet_windows:
+    runs-on: windows-latest
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Benchmark
+        shell: pwsh
+        run: |
+          ./benchmark-windows.ps1
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v2
+        with:
+          name: results_windows_dotnet
+          path: results_windows_dotnet.txt
+  
+  benchmark_nuget_windows:
+    runs-on: windows-latest
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v2
+    
+      - name: Disable strong name verification
+        run: |
+          reg DELETE "HKLM\Software\Microsoft\StrongName\Verification" /f
+          reg ADD "HKLM\Software\Microsoft\StrongName\Verification\*,*" /f
+          reg DELETE "HKLM\Software\Wow6432Node\Microsoft\StrongName\Verification" /f
+          reg ADD "HKLM\Software\Wow6432Node\Microsoft\StrongName\Verification\*,*" /f
+     
+      - name: Setup .NET SDK v6
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.100
+
+      - name: Benchmark
+        shell: pwsh
+        run: |
+          ./benchmark-nuget.ps1
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v2
+        with:
+          name: results_windows_nuget
+          path: results_windows_nuget.txt
