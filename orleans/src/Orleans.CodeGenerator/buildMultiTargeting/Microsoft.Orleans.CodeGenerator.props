@@ -1,3 +1,0 @@
-<Project>
-  <Import Project="..\build\Orleans.CodeGenerator.props" />
-</Project>

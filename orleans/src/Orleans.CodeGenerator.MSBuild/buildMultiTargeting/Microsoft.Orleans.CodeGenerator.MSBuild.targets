@@ -1,3 +1,0 @@
-<Project>
-  <Import Project="..\build\Orleans.CodeGenerator.MSBuild.targets" />
-</Project>
