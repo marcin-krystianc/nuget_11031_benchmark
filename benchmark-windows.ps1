@@ -4,6 +4,7 @@ $iterationCount = 1
 $dir = (Get-Item .).FullName
 $dotnet = "$dir\dotnet\dotnet.exe"
 & $dotnet nuget locals -l all
+& $dotnet nuget list source
 & $dotnet restore -clp:summary --force /p:RestoreUseStaticGraphEvaluation=true LargeAppWithPrivatePackagesCentralisedNGBVRemoved\solution
 
 $Env:MSBUILDDISABLENODEREUSE="1"
